@@ -14,6 +14,7 @@
 
     let contextMenu = null;
     let targetImage = null;
+    let imageType = 'artwork'; // 'artwork' or 'avatar'
 
     // Create custom context menu
     function createContextMenu() {
@@ -31,7 +32,7 @@
         `;
 
         const menuItem = document.createElement('div');
-        menuItem.textContent = 'Save Artwork';
+        menuItem.textContent = 'Save Image';
         menuItem.style.cssText = `
             padding: 8px 16px;
             cursor: pointer;
@@ -61,12 +62,23 @@
         const imageUrl = getHighResUrl(targetImage);
         
         // Extract filename from URL or use default
-        let filename = 'soundcloud-artwork.jpg';
-        const trackTitle = document.querySelector('.playbackSoundBadge__title span[aria-hidden="true"]')?.textContent ||
-                          document.querySelector('.soundTitle__title span')?.textContent;
+        let filename = 'soundcloud-image.jpg';
         
-        if (trackTitle) {
-            filename = trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
+        if (imageType === 'avatar') {
+            // For avatars, try to get the username
+            const username = document.querySelector('.profileHeaderInfo__userName')?.textContent ||
+                           document.querySelector('.userBadge__username')?.textContent ||
+                           targetImage.match(/avatars-[^/]+-(\w+)-/)?.[1] ||
+                           'avatar';
+            filename = username.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '-avatar.jpg';
+        } else {
+            // For artwork, use track title
+            const trackTitle = document.querySelector('.playbackSoundBadge__title span[aria-hidden="true"]')?.textContent ||
+                              document.querySelector('.soundTitle__title span')?.textContent;
+            
+            if (trackTitle) {
+                filename = trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
+            }
         }
 
         // Use GM_download for cross-origin images
@@ -88,10 +100,11 @@
             contextMenu.style.display = 'none';
         }
         targetImage = null;
+        imageType = 'artwork';
     }
 
-    // Check if element is SoundCloud artwork
-    function isSoundCloudArtwork(element) {
+    // Check if element is SoundCloud image (artwork or avatar)
+    function isSoundCloudImage(element) {
         if (!element) return false;
         
         // Check if it's an image element
@@ -104,17 +117,44 @@
             return element.style.backgroundImage.includes('sndcdn.com');
         }
         
-        // Check parent elements for artwork containers
-        const artworkSelectors = [
+        // Check parent elements for artwork or avatar containers
+        const imageSelectors = [
             '.image__full',
             '.image__lightOutline',
             '.sc-artwork',
             '.sound__coverArt',
             '.playbackSoundBadge__avatar',
-            '.soundBadge__avatarArtwork'
+            '.soundBadge__avatarArtwork',
+            '.userBadge__avatar',
+            '.profileHeaderInfo__avatar',
+            '.artistAvatar',
+            '.userAvatar'
         ];
         
-        return artworkSelectors.some(selector => element.closest(selector));
+        return imageSelectors.some(selector => element.closest(selector));
+    }
+    
+    // Determine if image is avatar or artwork
+    function getImageType(element) {
+        const avatarSelectors = [
+            '.userBadge__avatar',
+            '.profileHeaderInfo__avatar',
+            '.artistAvatar',
+            '.userAvatar'
+        ];
+        
+        // Check if it's an avatar
+        if (avatarSelectors.some(selector => element.closest(selector))) {
+            return 'avatar';
+        }
+        
+        // Check URL patterns for avatars
+        const imgUrl = getImageUrl(element);
+        if (imgUrl && imgUrl.includes('avatars-')) {
+            return 'avatar';
+        }
+        
+        return 'artwork';
     }
 
     // Get image URL from element
@@ -148,12 +188,13 @@
 
     // Handle right-click
     document.addEventListener('contextmenu', function(e) {
-        if (isSoundCloudArtwork(e.target)) {
+        if (isSoundCloudImage(e.target)) {
             e.preventDefault();
             
             const imageUrl = getImageUrl(e.target);
             if (imageUrl) {
                 targetImage = imageUrl;
+                imageType = getImageType(e.target);
                 contextMenu.style.left = e.clientX + 'px';
                 contextMenu.style.top = e.clientY + 'px';
                 contextMenu.style.display = 'block';
