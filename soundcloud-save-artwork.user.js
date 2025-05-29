@@ -15,6 +15,7 @@
     let contextMenu = null;
     let targetImage = null;
     let imageType = 'artwork'; // 'artwork' or 'avatar'
+    let targetElement = null; // Store the element that was clicked
 
     // Create custom context menu
     function createContextMenu() {
@@ -66,15 +67,33 @@
         
         if (imageType === 'avatar') {
             // For avatars, try to get the username
-            const username = document.querySelector('.profileHeaderInfo__userName')?.textContent ||
-                           document.querySelector('.userBadge__username')?.textContent ||
-                           targetImage.match(/avatars-[^/]+-(\w+)-/)?.[1] ||
-                           'avatar';
+            let username = document.querySelector('.profileHeaderInfo__userName')?.textContent?.trim() ||
+                          document.querySelector('.userBadge__username')?.textContent?.trim() ||
+                          targetImage.match(/avatars-[^/]+-(\w+)-/)?.[1] ||
+                          'avatar';
+            // Clean up username - remove extra whitespace and special characters
+            username = username.replace(/\s+/g, ' ').trim();
             filename = username.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '-avatar.jpg';
         } else {
-            // For artwork, use track title
-            const trackTitle = document.querySelector('.playbackSoundBadge__title span[aria-hidden="true"]')?.textContent ||
-                              document.querySelector('.soundTitle__title span')?.textContent;
+            // For artwork, try to get track title from the clicked element's context
+            let trackTitle = null;
+            
+            // Try to find track title from the clicked element's parent containers
+            const soundItem = targetElement?.closest('.sound__body, .soundList__item, .trackItem, .searchItem, .soundBadge');
+            if (soundItem) {
+                // Try multiple selectors to find the track title
+                trackTitle = soundItem.querySelector('.soundTitle__title span')?.textContent?.trim() ||
+                           soundItem.querySelector('.soundTitle__title')?.textContent?.trim() ||
+                           soundItem.querySelector('.trackItem__trackTitle')?.textContent?.trim() ||
+                           soundItem.querySelector('.soundTitle__titleContainer a')?.textContent?.trim() ||
+                           soundItem.querySelector('a[href*="/"][href*="-"]')?.textContent?.trim();
+            }
+            
+            // Fallback to currently playing track if no title found
+            if (!trackTitle) {
+                trackTitle = document.querySelector('.playbackSoundBadge__title span[aria-hidden="true"]')?.textContent ||
+                            document.querySelector('.soundTitle__title span')?.textContent;
+            }
             
             if (trackTitle) {
                 filename = trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
@@ -101,6 +120,7 @@
         }
         targetImage = null;
         imageType = 'artwork';
+        targetElement = null;
     }
 
     // Check if element is SoundCloud image (artwork or avatar)
@@ -159,6 +179,9 @@
 
     // Get image URL from element
     function getImageUrl(element) {
+        // Store the element for later reference
+        targetElement = element;
+        
         if (element.tagName === 'IMG') {
             return element.src;
         }
@@ -170,14 +193,20 @@
         
         // Check for img child elements
         const img = element.querySelector('img');
-        if (img) return img.src;
+        if (img) {
+            targetElement = img;
+            return img.src;
+        }
         
         // Check parent elements
         const parent = element.closest('.sc-artwork, .sound__coverArt, .playbackSoundBadge__avatar');
         if (parent) {
             const bgImage = window.getComputedStyle(parent).backgroundImage;
             const match = bgImage.match(/url\(["']?(.+?)["']?\)/);
-            return match ? match[1] : null;
+            if (match) {
+                targetElement = parent;
+                return match[1];
+            }
         }
         
         return null;
