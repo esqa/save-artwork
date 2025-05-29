@@ -154,8 +154,8 @@
             const imageUrl = getImageUrl(e.target);
             if (imageUrl) {
                 targetImage = imageUrl;
-                contextMenu.style.left = e.pageX + 'px';
-                contextMenu.style.top = e.pageY + 'px';
+                contextMenu.style.left = e.clientX + 'px';
+                contextMenu.style.top = e.clientY + 'px';
                 contextMenu.style.display = 'block';
             }
         } else {
