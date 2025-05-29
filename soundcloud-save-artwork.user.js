@@ -55,6 +55,14 @@
         // We want to get the highest quality version
         return url.replace(/-t\d+x\d+/, '-t500x500');
     }
+    
+    // Clean filename - remove multiple underscores and trim
+    function cleanFilename(str) {
+        return str.replace(/[^a-z0-9]/gi, '_')  // Replace non-alphanumeric with underscore
+                  .replace(/_+/g, '_')           // Replace multiple underscores with single
+                  .replace(/^_|_$/g, '')         // Remove leading/trailing underscores
+                  .toLowerCase();
+    }
 
     // Save the artwork
     function saveArtwork() {
@@ -73,20 +81,48 @@
                           'avatar';
             // Clean up username - remove extra whitespace and special characters
             username = username.replace(/\s+/g, ' ').trim();
-            filename = username.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '-avatar.jpg';
+            filename = cleanFilename(username) + '-avatar.jpg';
         } else {
             // For artwork, try to get track title from the clicked element's context
             let trackTitle = null;
             
-            // Try to find track title from the clicked element's parent containers
-            const soundItem = targetElement?.closest('.sound__body, .soundList__item, .trackItem, .searchItem, .soundBadge');
-            if (soundItem) {
-                // Try multiple selectors to find the track title
-                trackTitle = soundItem.querySelector('.soundTitle__title span')?.textContent?.trim() ||
-                           soundItem.querySelector('.soundTitle__title')?.textContent?.trim() ||
-                           soundItem.querySelector('.trackItem__trackTitle')?.textContent?.trim() ||
-                           soundItem.querySelector('.soundTitle__titleContainer a')?.textContent?.trim() ||
-                           soundItem.querySelector('a[href*="/"][href*="-"]')?.textContent?.trim();
+            // First, try to get title from aria-label attribute
+            if (targetElement?.getAttribute('aria-label')) {
+                trackTitle = targetElement.getAttribute('aria-label').trim();
+            }
+            
+            // Check if clicking on the playback bar
+            const isPlaybackBar = targetElement?.closest('.playbackSoundBadge, .playControls');
+            
+            if (!trackTitle && isPlaybackBar) {
+                // For playback bar, always use the currently playing track
+                trackTitle = document.querySelector('.playbackSoundBadge__title span[aria-hidden="true"]')?.textContent?.trim() ||
+                           document.querySelector('.playbackSoundBadge__titleLink')?.textContent?.trim();
+            } else if (!trackTitle && window.location.pathname.includes('/') && window.location.pathname.split('/').length === 3) {
+                // On a track page and NOT clicking playback bar, use the main title
+                trackTitle = document.querySelector('.soundTitle__title')?.textContent?.trim() ||
+                           document.querySelector('h1[itemprop="name"]')?.textContent?.trim() ||
+                           document.querySelector('.fullHero__title')?.textContent?.trim();
+            }
+            
+            // If not on track page or title not found, look in clicked element's context
+            if (!trackTitle) {
+                const soundItem = targetElement?.closest('.sound__body, .soundList__item, .trackItem, .searchItem, .soundBadge, .userStreamItem');
+                if (soundItem) {
+                    // First check for aria-label in the artwork element
+                    const artwork = soundItem.querySelector('.sc-artwork[aria-label]');
+                    if (artwork) {
+                        trackTitle = artwork.getAttribute('aria-label').trim();
+                    } else {
+                        // Fallback to text-based selectors
+                        trackTitle = soundItem.querySelector('.soundTitle__title span:not(.soundTitle__usernameText)')?.textContent?.trim() ||
+                                   soundItem.querySelector('.soundTitle__title')?.textContent?.trim() ||
+                                   soundItem.querySelector('.trackItem__trackTitle')?.textContent?.trim() ||
+                                   soundItem.querySelector('.soundTitle__titleContainer a')?.textContent?.trim() ||
+                                   soundItem.querySelector('a.soundTitle__title')?.textContent?.trim() ||
+                                   soundItem.querySelector('a[href*="/"][href*="-"]:not(.soundTitle__username)')?.textContent?.trim();
+                    }
+                }
             }
             
             // Fallback to currently playing track if no title found
@@ -96,7 +132,7 @@
             }
             
             if (trackTitle) {
-                filename = trackTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
+                filename = cleanFilename(trackTitle) + '.jpg';
             }
         }
 
