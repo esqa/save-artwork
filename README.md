@@ -40,7 +40,7 @@
 
 1. **Click the install button:**
    
-   [![Install Script](https://img.shields.io/badge/Install-Script-success?style=for-the-badge)](https://raw.githubusercontent.com/yourusername/save-artwork/main/soundcloud-extras.user.js)
+   [![Install Script](https://img.shields.io/badge/Install-Script-success?style=for-the-badge)](https://github.com/esqa/soundcloud-extras/raw/refs/heads/main/soundcloud-extras.user.js)
 
 2. **Or install manually:**
    - Open Tampermonkey Dashboard
