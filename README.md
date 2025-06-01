@@ -1,4 +1,4 @@
-# SoundCloud Extras
+<h1 align="center">Soundcloud Extras</h1>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Tampermonkey-Script-blue?style=for-the-badge&logo=tampermonkey" alt="Tampermonkey">
@@ -56,13 +56,13 @@ When you right-click on any track artwork, you'll see:
 - **Save Image** - Downloads the track artwork
 - **Save Track** - Downloads the MP3 file
 
-### Saving Artwork from the Main Player
+<h3 align="center">Saving Artwork from the Main Player</h3>
 
 <div align="center">
   <img src="player-example.gif" alt="Player Example" width="500">
 </div>
 
-### Saving from Artist Pages
+<h3 align="center">Saving from Artist Pages</h3>
 
 <div align="center">
   <img src="artist-example.gif" alt="Artist Page Example" width="500">
