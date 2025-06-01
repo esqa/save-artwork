@@ -1,13 +1,13 @@
-# 🎨 SoundCloud Save Artwork
+# 🎵 SoundCloud Extras
 
 <div align="center">
   <img src="https://img.shields.io/badge/Tampermonkey-Script-blue?style=for-the-badge&logo=tampermonkey" alt="Tampermonkey">
-  <img src="https://img.shields.io/badge/SoundCloud-Artwork-orange?style=for-the-badge&logo=soundcloud" alt="SoundCloud">
+  <img src="https://img.shields.io/badge/SoundCloud-Extras-orange?style=for-the-badge&logo=soundcloud" alt="SoundCloud">
   <img src="https://img.shields.io/badge/Version-1.0-green?style=for-the-badge" alt="Version">
 </div>
 
 <div align="center">
-  <h3>✨ Save high-quality artwork from SoundCloud with a simple right-click ✨</h3>
+  <h3>✨ Save artwork and download tracks from SoundCloud with a simple right-click ✨</h3>
 </div>
 
 ---
@@ -20,9 +20,10 @@
 
 ## 🚀 Features
 
-- 🖱️ **Simple Right-Click Menu** - Just right-click any artwork to save it
-- 🖼️ **High-Quality Downloads** - Automatically fetches the highest resolution (500x500)
-- 📝 **Smart Naming** - Files are named after the track title
+- 🖱️ **Simple Right-Click Menu** - Right-click any artwork for options
+- 🖼️ **Save Artwork** - Download high-quality artwork (500x500)
+- 🎵 **Download Tracks** - Save MP3 files directly from SoundCloud
+- 📝 **Smart Naming** - Files are automatically named (track title or artist - track)
 - 🎯 **Works Everywhere** - Player, track lists, artist pages, playlists, and more
 - ⚡ **Lightweight** - No performance impact on your browsing
 
@@ -39,15 +40,21 @@
 
 1. **Click the install button:**
    
-   [![Install Script](https://img.shields.io/badge/Install-Script-success?style=for-the-badge)](https://raw.githubusercontent.com/yourusername/save-artwork/main/soundcloud-save-artwork.user.js)
+   [![Install Script](https://img.shields.io/badge/Install-Script-success?style=for-the-badge)](https://raw.githubusercontent.com/yourusername/save-artwork/main/soundcloud-extras.user.js)
 
 2. **Or install manually:**
    - Open Tampermonkey Dashboard
    - Click "Create a new script"
-   - Copy and paste the script from [`soundcloud-save-artwork.user.js`](soundcloud-save-artwork.user.js)
+   - Copy and paste the script from [`soundcloud-extras.user.js`](soundcloud-extras.user.js)
    - Save with `Ctrl+S` (or `Cmd+S` on Mac)
 
 ## 🎯 Usage
+
+### Right-Click Menu Options
+
+When you right-click on any track artwork, you'll see:
+- **Save Image** - Downloads the track artwork
+- **Save Track** - Downloads the MP3 file
 
 ### Saving Artwork from the Main Player
 
@@ -64,9 +71,10 @@
 ## 🛠️ How It Works
 
 1. **Detection** - The script detects when you right-click on SoundCloud artwork
-2. **Menu** - Shows a custom "Save Artwork" option in the context menu
-3. **Download** - Fetches the high-resolution version and downloads it
-4. **Naming** - Automatically names the file based on the track title
+2. **Menu** - Shows custom options: "Save Image" and "Save Track"
+3. **Artwork** - Fetches high-resolution artwork (500x500) and downloads it
+4. **Tracks** - Uses SoundCloud's API to fetch and download MP3 files
+5. **Naming** - Automatically names files based on track/artist information
 
 ## 📋 Supported Locations
 
@@ -85,8 +93,11 @@ The script works on artwork found in:
 The script works out of the box, but you can modify these settings in the code:
 
 - **Image Quality**: Default is 500x500 (highest available)
-- **File Format**: Default saves as `.jpg`
-- **Naming Convention**: Uses track title with underscores replacing special characters
+- **Image Format**: Saves as `.jpg`
+- **Audio Format**: Downloads as `.mp3`
+- **Naming Convention**: 
+  - Artwork: `track_title.jpg`
+  - Tracks: `artist_name - track_title.mp3`
 
 ## 🐛 Troubleshooting
 
@@ -127,6 +138,6 @@ The script works out of the box, but you can modify these settings in the code:
 <div align="center">
   <p>Made with ❤️ for music lovers</p>
   <p>
-    <a href="#-soundcloud-save-artwork">Back to top ↑</a>
+    <a href="#-soundcloud-extras">Back to top ↑</a>
   </p>
 </div>
