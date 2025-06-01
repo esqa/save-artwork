@@ -1,4 +1,4 @@
-# 🎵 SoundCloud Extras
+# SoundCloud Extras
 
 <div align="center">
   <img src="https://img.shields.io/badge/Tampermonkey-Script-blue?style=for-the-badge&logo=tampermonkey" alt="Tampermonkey">
@@ -7,27 +7,27 @@
 </div>
 
 <div align="center">
-  <h3>✨ Save artwork and download tracks from SoundCloud with a simple right-click ✨</h3>
+  <h3>Save artwork and download tracks from SoundCloud with a simple right-click</h3>
 </div>
 
 ---
 
-## 📸 Demo
+## Demo
 
 <div align="center">
   <img src="demo.gif" alt="Demo GIF" width="600">
 </div>
 
-## 🚀 Features
+## Features
 
-- 🖱️ **Simple Right-Click Menu** - Right-click any artwork for options
-- 🖼️ **Save Artwork** - Download high-quality artwork (500x500)
-- 🎵 **Download Tracks** - Save MP3 files directly from SoundCloud
-- 📝 **Smart Naming** - Files are automatically named (track title or artist - track)
-- 🎯 **Works Everywhere** - Player, track lists, artist pages, playlists, and more
-- ⚡ **Lightweight** - No performance impact on your browsing
+- **Simple Right-Click Menu** - Right-click any artwork for options
+- **Save Artwork** - Download high-quality artwork (500x500)
+- **Download Tracks** - Save MP3 files directly from SoundCloud
+- **Smart Naming** - Files are automatically named (track title or artist - track)
+- **Works Everywhere** - Player, track lists, artist pages, playlists, and more
+- **Lightweight** - No performance impact on your browsing
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 - Install [Tampermonkey](https://www.tampermonkey.net/) for your browser:
@@ -48,7 +48,7 @@
    - Copy and paste the script from [`soundcloud-extras.user.js`](soundcloud-extras.user.js)
    - Save with `Ctrl+S` (or `Cmd+S` on Mac)
 
-## 🎯 Usage
+## Usage
 
 ### Right-Click Menu Options
 
@@ -68,7 +68,7 @@ When you right-click on any track artwork, you'll see:
   <img src="artist-example.gif" alt="Artist Page Example" width="500">
 </div>
 
-## 🛠️ How It Works
+## How It Works
 
 1. **Detection** - The script detects when you right-click on SoundCloud artwork
 2. **Menu** - Shows custom options: "Save Image" and "Save Track"
@@ -76,19 +76,19 @@ When you right-click on any track artwork, you'll see:
 4. **Tracks** - Uses SoundCloud's API to fetch and download MP3 files
 5. **Naming** - Automatically names files based on track/artist information
 
-## 📋 Supported Locations
+## Supported Locations
 
 The script works on artwork found in:
 
-- ✅ Main player (bottom bar)
-- ✅ Track pages
-- ✅ User/Artist pages
-- ✅ Playlist pages
-- ✅ Search results
-- ✅ Stream/Feed
-- ✅ Charts and trending pages
+- Main player (bottom bar)
+- Track pages
+- User/Artist pages
+- Playlist pages
+- Search results
+- Stream/Feed
+- Charts and trending pages
 
-## ⚙️ Configuration
+## Configuration
 
 The script works out of the box, but you can modify these settings in the code:
 
@@ -99,7 +99,7 @@ The script works out of the box, but you can modify these settings in the code:
   - Artwork: `track_title.jpg`
   - Tracks: `artist_name - track_title.mp3`
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 <details>
 <summary><b>Menu doesn't appear when right-clicking</b></summary>
@@ -127,7 +127,7 @@ The script works out of the box, but you can modify these settings in the code:
 - Original upload quality varies by artist/track
 </details>
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built for the SoundCloud community
 - Powered by [Tampermonkey](https://www.tampermonkey.net/)
@@ -136,8 +136,8 @@ The script works out of the box, but you can modify these settings in the code:
 ---
 
 <div align="center">
-  <p>Made with ❤️ for music lovers</p>
+  <p>Made with love for music lovers</p>
   <p>
-    <a href="#-soundcloud-extras">Back to top ↑</a>
+    <a href="#soundcloud-extras">Back to top</a>
   </p>
 </div>
